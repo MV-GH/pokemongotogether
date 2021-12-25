@@ -1,0 +1,14 @@
+NIET BGindex https://www.pixelstalk.net/pokemon-go-backgrounds-free-download/
+template nav https://freefrontend.com/css-menu/
+WEL bgs http://getwallpapers.com/collection/pokemon-4k-wallpaper
+
+centerSTUFF OKAY #todo replace center tag ?inconsistent capitalization op titles zoals Overzicht Meldingen
+.center{
+    text-align: center;
+    display: inherit;
+}
+
+.center > div { /* It is the fix if there are any div tag inside center tag */
+    margin-left: auto;
+    margin-right: auto;
+}
