@@ -38,6 +38,17 @@
 					$stmt->bindParam(":et", $pass1, PDO::PARAM_STR);
 					$stmt->bindParam(":etc", $_POST['Email'], PDO::PARAM_STR);
 					$stmt->execute();
+
+
+					$sql = "select * from gebruiker where lower(Gebruikersnaam) = lower(?)";
+					$stmt = $link->prepare($sql);
+					$stmt->bindParam(1, $user);
+					$stmt->execute();
+					$stmt = $stmt->fetch();
+					$_SESSION['YouLoggedIn'] = 1;
+					$_SESSION['Username'] = $stmt['Gebruikersnaam'];
+					$_SESSION['ID'] = $stmt['GIB'];
+					$_SESSION['Admin'] = $stmt['Beheerder'];
 				} catch (Exception $e) {
 				}
 			}
@@ -66,7 +77,6 @@
 			}else {
 				$msg = 'Wachtwoord en/of gebruikersnaam klopt niet.';
 			}
-
 		} else {
 			$msg = 'Wachtwoord en/of gebruikersnaam klopt niet.';
 		}
