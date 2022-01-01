@@ -1,0 +1,27 @@
+version: '3.8'
+services:
+  php-apache-environment:
+    container_name: php-apache
+    build:
+      context: ./public/extraFiles
+      dockerfile: Dockerfile
+    image: php:8.0-apache
+    volumes:
+      - ./public:/var/www/html/
+    ports:
+      - 8000:80
+    depends_on:
+      - db
+  db:
+    container_name: db
+    image: mysql
+    restart: always
+    volumes:
+      - ./mysql-dump:/docker-entrypoint-initdb.d
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: user
+      MYSQL_PASSWORD: user
+      MYSQL_DATABASE: pokemon_go_together
+    ports:
+      - 3308:3306
