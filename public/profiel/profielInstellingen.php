@@ -17,7 +17,7 @@
 		}
 		if (isset($_POST['Gebveranderen'])) {
 
-			$sql = "select * from gebruiker where Gebruikersnaam = ?";
+			$sql = "select * from gebruiker where lower(Gebruikersnaam) = lower(?)";
 			$stmt2 = $link->prepare($sql);
 			$stmt2->bindParam(1, $_POST['Geb']);
 			$stmt2->execute();
@@ -43,10 +43,11 @@
 
 		if (isset($_POST['wwveranderen'])) {
 
-			if ($stmt['Paswoord'] == sha1($_POST['PasswordOld'])) {
+			if (password_verify($_POST['PasswordOld'], $stmt['Paswoord'])) {
 				if ($_POST['PasswordNew'] == $_POST['PasswordNew2']) {
-					$stmt5 = $link->prepare("update gebruiker set Paswoord = sha1( ? ) where GIB = ?");
-					$stmt5->bindParam(1, $_POST['PasswordNew']);
+					$pw = password_hash($_POST['PasswordNew'], PASSWORD_DEFAULT);
+					$stmt5 = $link->prepare("update gebruiker set Paswoord = ? where GIB = ?");
+					$stmt5->bindParam(1, $pw);
 					$stmt5->bindParam(2, $_SESSION['ID']);
 					$stmt5->execute();
 				} else {
