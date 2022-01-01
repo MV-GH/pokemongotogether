@@ -14,37 +14,32 @@
 		*/
 	if (isset($_POST['RegistrerenLid'])) {
 
-		$pass1 = sha1($_POST['Password1']);
-		$pass2 = sha1($_POST['Password2']);
-		$user = $_POST['Username'];
-
-		$sql = "select * from gebruiker where Gebruikersnaam = ?";
-		$stmt = $link->prepare($sql);
-		$stmt->bindParam(1, $user);
-		$stmt->execute();
-		$count = $stmt->rowCount();
-		if ($count == 1) {
+		if($_POST['Password1'] != $_POST['Password2'] ) {
 			$fag = true;
-			$msg = 'Gebruikersnaam bestaat al!';
-		} else {
+			$msg = 'Paswoorden komen niet overeen!';
+		}else {
+			$pass1 = password_hash($_POST['Password1'], PASSWORD_DEFAULT);
+			$user = $_POST['Username'];
 
-			if ($pass1 == $pass2) {
+			$sql = "select * from gebruiker where lower(Gebruikersnaam) = lower(?)";
+			$stmt = $link->prepare($sql);
+			$stmt->bindParam(1, $user);
+			$stmt->execute();
+			$count = $stmt->rowCount();
+
+			if ($count == 1) {
+				$fag = true;
+				$msg = 'Gebruikersnaam bestaat al!';
+			} else {
 				try {
-
 					$sql = "INSERT INTO `gebruiker` (`Gebruikersnaam`, `Paswoord`, `Email`) VALUES ( :e , :et , :etc )";
 					$stmt = $link->prepare($sql);
 					$stmt->bindParam(":e", $user, PDO::PARAM_STR);
 					$stmt->bindParam(":et", $pass1, PDO::PARAM_STR);
 					$stmt->bindParam(":etc", $_POST['Email'], PDO::PARAM_STR);
 					$stmt->execute();
-
 				} catch (Exception $e) {
-
-
 				}
-			} else {
-				$fag = true;
-				$msg = 'Paswoorden komen niet overeen!';
 			}
 		}
 	}
@@ -56,19 +51,21 @@
 	/*Inloggen*/
 	if (isset($_POST['verzendenButton'])) {
 
-		$sql = "select * from gebruiker where Gebruikersnaam = ? and Paswoord= ? ";
+		$sql = "select * from gebruiker where lower(Gebruikersnaam) = lower(?)";
 		$stmt = $link->prepare($sql);
-		$pass = sha1($_POST['Password']);
 		$stmt->bindParam(1, $_POST['Username']);
-		$stmt->bindParam(2, $pass);
 		$stmt->execute();
 		$count = $stmt->rowCount();
 		$stmt = $stmt->fetch();
 		if ($count == 1) {
-			$_SESSION['YouLoggedIn'] = 1;
-			$_SESSION['Username'] = $stmt['Gebruikersnaam'];
-			$_SESSION['ID'] = $stmt['GIB'];
-			$_SESSION['Admin'] = $stmt['Beheerder'];
+			if (password_verify($_POST['Password'], $stmt["Paswoord"])){
+				$_SESSION['YouLoggedIn'] = 1;
+				$_SESSION['Username'] = $stmt['Gebruikersnaam'];
+				$_SESSION['ID'] = $stmt['GIB'];
+				$_SESSION['Admin'] = $stmt['Beheerder'];
+			}else {
+				$msg = 'Wachtwoord en/of gebruikersnaam klopt niet.';
+			}
 
 		} else {
 			$msg = 'Wachtwoord en/of gebruikersnaam klopt niet.';

@@ -1,5 +1,5 @@
 -- seems like database was missing from the dump
-CREATE DATABASE pokemon_go_together;
+CREATE DATABASE IF NOT EXISTS pokemon_go_together;
 USE pokemon_go_together;
 
 -- phpMyAdmin SQL Dump
@@ -101,11 +101,11 @@ CREATE TABLE IF NOT EXISTS `gebruiker` (
 --
 
 INSERT INTO `gebruiker` (`GIB`, `Gebruikersnaam`, `Paswoord`, `AanmaakDatum`, `Beheerder`, `Email`) VALUES
-(1, 'Gebruiker11', '4a8a9fc31dc15a4b87bb145b05db3ae0bf2333e4', '2019-04-29 05:39:22', 0, 'Mda+jf'),
-(2, 'Bob', 'da6645f6e22bf5f75974dc7eed5fcd6160d6b51e', '2019-05-14 21:30:43', 0, 'bob@b.com'),
-(3, 'Leukerd', 'afeb5f66e6063a003bac00be7e632243371dde8e', '2019-05-14 21:32:50', 1, 'niet@gm.com'),
-(4, 'Tester', '640ab2bae07bedc4c163f679a746f7ab7fb5d1fa', '2019-05-14 21:41:50', 0, 'test@gmail.com'),
-(5, 'admin', '499ffd9cc49cfbb6fdcc159afc9c6a5c301c3c2f', '2019-05-18 17:00:41', 1, 'admin@school.com');
+(1, 'Gebruiker11', '$2a$12$GhR0NtgoGuVH0Vletw3Xd.ga5yQQO22.cPhfcyofCD1P5hhrPufMi', '2019-04-29 05:39:22', 0, 'Mda+jf'),
+(2, 'Bob', '$2a$12$PU2FgCh0bsJWBhGC7PMJDODFBk3zNvzJ/miEhUj.yUjhFJ92pOdgO', '2019-05-14 21:30:43', 0, 'bob@b.com'),
+(3, 'Leukerd', '$2a$12$JHzHP1nMA5kpsuiCz3dSou2j0lPp94Ny6ofGZDDvtLoPC5QIt7knq', '2019-05-14 21:32:50', 1, 'niet@gm.com'),
+(4, 'Tester', '$2a$12$ynWg7wYTAlFxcYYYVIQopefDmlltfM8vIvNLVQRvcZRYm.Fd1kgV6', '2019-05-14 21:41:50', 0, 'test@gmail.com'),
+(5, 'admin', '$2a$12$hkKiTZDaSsoIv88BAUOR5.BsEey/b7miAU7ur7tr6ehMSS0HI4ADi', '2019-05-18 17:00:41', 1, 'admin@school.com');
 
 -- --------------------------------------------------------
 
